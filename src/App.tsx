@@ -4,7 +4,6 @@ import './App.css'
 import WordBlock from './wordblock.tsx'
 
 function App() {
-  const [count, setCount] = useState(0)
   const [score, setScore] = useState(0)
 
   return (
