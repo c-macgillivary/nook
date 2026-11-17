@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import nookIkon from './assets/nook icon.png'
 import './App.css'
+import WordBlock from './wordblock.tsx'
 
 function App() {
   const [count, setCount] = useState(0)
+  const [score, setScore] = useState(0)
 
   return (
     <>
@@ -17,13 +19,8 @@ function App() {
             the coziest games. duh.
           </p>
         </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => (count * 2) + 67)}
-        >
-          Count is {count}
-        </button>
+        <p className="score" aria-live="polite">Score: {score}</p>
+        <WordBlock onSolve={() => setScore((score) => score + 1)} />
       </section>
     </>
   )

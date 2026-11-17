@@ -1,0 +1,129 @@
+.wordblock {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-sizing: border-box;
+  /* Wide enough to click either side of the word. */
+  width: min(100%, 640px);
+  min-height: 64px;
+  padding: 8px 16px;
+  font-family: var(--mono);
+  font-size: 32px;
+  color: var(--text-h);
+  cursor: text;
+  user-select: none;
+}
+
+/* Receives the typing but is never seen. */
+.wordblock-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  opacity: 0;
+  border: 0;
+  padding: 0;
+  pointer-events: none;
+  font-size: 16px; /* stops iOS zooming in on focus */
+}
+
+.wordblock-middle {
+  display: flex;
+  gap: 8px;
+}
+
+.wordblock-char {
+  --edge: 0px; /* no border */
+  position: relative;
+  width: 1ch;
+  text-align: center;
+}
+
+.wordblock-tile {
+  --edge: 2px; /* border width */
+  position: relative;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  width: 48px;
+  height: 48px;
+  background: var(--accent-bg);
+  border: 2px solid var(--accent-border);
+  border-radius: 8px;
+  animation: wordblock-pop 0.15s ease-out;
+}
+
+/*
+ * The cursor is drawn over the gap beside a letter, so it takes up no
+ * space and moving it never shifts anything. The offset centres the 3px
+ * bar in the 8px gap, measured from inside the letter's border.
+ */
+/* Only drawn while the word has keyboard focus. */
+.wordblock:focus-within .caret-before::before,
+.wordblock:focus-within .caret-after::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 3px;
+  height: 40px;
+  border-radius: 2px;
+  background: var(--accent);
+  transform: translateY(-50%);
+  pointer-events: none;
+  animation: wordblock-blink 1s steps(1) infinite;
+}
+
+.caret-before::before {
+  left: calc(-1 * (var(--edge) + 5.5px));
+}
+
+.caret-after::after {
+  right: calc(-1 * (var(--edge) + 5.5px));
+}
+
+@keyframes wordblock-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.wordblock-rejected {
+  animation: wordblock-shake 0.3s ease-in-out;
+}
+
+@keyframes wordblock-shake {
+  25% {
+    transform: translateX(-6px);
+  }
+  75% {
+    transform: translateX(6px);
+  }
+}
+
+@keyframes wordblock-flash {
+  50% {
+    color: var(--text);
+  }
+}
+
+@keyframes wordblock-pop {
+  from {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* A short colour flash still signals a rejected word. */
+  .wordblock-rejected {
+    animation: wordblock-flash 0.3s;
+  }
+
+  .wordblock-tile,
+  .caret-before::before,
+  .caret-after::after {
+    animation: none;
+  }
+}
