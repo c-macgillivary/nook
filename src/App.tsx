@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import nookIkon from './assets/nook icon.png'
 import './App.css'
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
         <div className="hero">
         </div>
         <div>
+          <img src={nookIkon} alt="logo" style={{width: '300px', height: '200px', objectFit: 'cover'}}></img>
           <h1>Nook</h1>
           <p>
             the coziest games. duh.
